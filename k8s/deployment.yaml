@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mp054-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mp054-api
+  template:
+    metadata:
+      labels:
+        app: mp054-api
+    spec:
+      containers:
+        - name: api
+          image: mp054-api:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10

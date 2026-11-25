@@ -11,10 +11,25 @@
   <header class="masthead">
     <div class="shell masthead-inner">
       <div><strong>Cab ETA</strong><span class="place">Indore · G045 / MP054</span></div>
-      <a class="project" href="#model-training">Model Training</a>
+      <nav><a class="project" href="#model-training">Model Training</a> · <a class="project" href="#predict-eta">Predict ETA</a></nav>
     </div>
   </header>
   <main class="shell">
+    <section id="predict-eta" class="evidence">
+      <h2>Predict ETA</h2>
+      <form id="prediction-form">
+        <label>Nearby drivers <input name="drivers_nearby" type="number" min="0" value="6" required></label>
+        <label>Driver distance (km) <input name="distance_to_driver_km" type="number" min="0" max="15" step="any" value="3.5" required></label>
+        <label>Hour <input name="hour" type="number" min="0" max="23" value="17" required></label>
+        <label>Rain (mm) <input name="rain_mm" type="number" min="0" step="any" value="2" required></label>
+        <label>Surge <input name="surge" type="number" min="0.01" step="any" value="1.1" required></label>
+        <label>Road closures <input name="road_closures" type="number" min="0" value="0" required></label>
+        <label>Car type <select name="car_type"><option>sedan</option><option>mini</option><option>auto</option></select></label>
+        <label>Zone <select name="zone"><option>Airport</option><option>Old City</option><option>Tech Park</option></select></label>
+        <button type="submit">Predict pick-up time</button>
+        <output id="prediction-result" aria-live="polite"></output>
+      </form>
+    </section>
     <p class="eyebrow">Phase 1 · Data audit</p>
     <h1>Pick-up time datasets</h1>
     <p id="loading" role="status">Loading project data…</p>

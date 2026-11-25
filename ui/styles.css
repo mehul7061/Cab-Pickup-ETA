@@ -68,3 +68,21 @@ tbody tr:last-child td { border: 0; }
 @media (prefers-reduced-motion: reduce) {
   button { transition: none; }
 }
+
+#prediction-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+#prediction-form label { display: grid; gap: 4px; font-size: 14px; }
+#prediction-form input, #prediction-form select {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 7px;
+  margin: 0;
+  font: inherit;
+}
+#prediction-form button { background: var(--accent); color: white; }
+#prediction-form button:hover { background: #125549; }
+#prediction-result { grid-column: 1 / -1; font-weight: 650; }

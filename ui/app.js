@@ -179,3 +179,31 @@ async function loadTraining() {
 }
 
 loadTraining();
+
+select("#prediction-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const output = select("#prediction-result");
+  const values = Object.fromEntries(new FormData(form));
+  for (const input of form.querySelectorAll("input[type=number]")) {
+    values[input.name] = input.valueAsNumber;
+  }
+  output.textContent = "Predicting…";
+  try {
+    const response = await fetch("/predict", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
+    if (!response.ok) {
+      output.textContent = response.status === 422
+        ? "Check the booking values."
+        : "Start the Stage 3 API to make predictions.";
+      return;
+    }
+    const result = await response.json();
+    output.textContent = `Estimated pick-up time: ${result.pickup_eta_min.toFixed(1)} minutes`;
+  } catch {
+    output.textContent = "Could not reach the prediction API.";
+  }
+});

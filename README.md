@@ -108,3 +108,29 @@ in-memory fixtures. The FastAPI TestClient test belongs with the Stage 3 API.
 Start MLflow from the project root so the bundled relative artifact paths
 resolve. If you load the registered model through MLflow's pyfunc interface,
 cast the six numeric feature columns to float before calling `predict`.
+
+## Stage 3 — Prediction API and dashboard
+
+From the project folder with Python 3.12, run:
+
+```sh
+python -m pip install -r requirements.txt
+python -m pytest -q
+python -m uvicorn app.main:app
+```
+
+Open http://127.0.0.1:8000 for the dashboard and Predict ETA form.
+Open http://127.0.0.1:8000/docs for the API explorer. Stop a running
+dashboard on port 8000 before starting Uvicorn.
+
+To test the container with Docker Desktop running:
+
+```sh
+docker build -t mp054-api:1.0 .
+docker run --rm -p 127.0.0.1:8000:8000 mp054-api:1.0
+```
+
+Check http://127.0.0.1:8000/health. The API uses the bundled model and
+can run without the raw CSVs. For the data audit in a fresh Git clone,
+restore the raw CSVs as described in Stage 1. The Kubernetes manifests
+are in `k8s/`. GitHub Actions runs the tests on each push.

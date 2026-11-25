@@ -35,6 +35,19 @@ def read_training_results():
     return [dict(run) for run in results]
 
 
+def read_dashboard_data():
+    data_paths = {name: ROOT / "data" / "raw" / f"{name}.csv" for name in DATASETS}
+    datasets = {}
+    for name, path in data_paths.items():
+        columns, rows = read_csv(path)
+        datasets[name] = {"columns": columns, "rows": rows}
+    findings, _ = audit(
+        {**data_paths, "holdout": data_paths["holdout_features"]},
+        "pickup_eta_min",
+    )
+    return {"datasets": datasets, "findings": findings}
+
+
 class DashboardHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(ROOT / "ui"), **kwargs)
@@ -51,20 +64,12 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             return
 
         try:
-            data_paths = {name: ROOT / "data" / "raw" / f"{name}.csv" for name in DATASETS}
-            datasets = {}
-            for name, path in data_paths.items():
-                columns, rows = read_csv(path)
-                datasets[name] = {"columns": columns, "rows": rows}
-            findings, _ = audit(
-                {**data_paths, "holdout": data_paths["holdout_features"]},
-                "pickup_eta_min",
-            )
+            data = read_dashboard_data()
         except (OSError, ValueError):
             self.send_error(500, "Unable to load or audit the project CSV files")
             return
 
-        self.send_json({"datasets": datasets, "findings": findings})
+        self.send_json(data)
 
     def send_json(self, data):
         body = json.dumps(data).encode("utf-8")
