@@ -30,10 +30,10 @@ data_issues:
     column: car_type
     true_levels: 3
 tracking:
-  experiment_name: null
-  best_run_id: null
-  registered_model_name: null
-  champion_version: null
+  experiment_name: MP054 Stage 2
+  best_run_id: 5864f3fea8ad417dad6a1b9747274133
+  registered_model_name: mp054-cab-eta
+  champion_version: 1
 monitoring:
   psi:
     drivers_nearby: null

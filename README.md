@@ -73,3 +73,38 @@ rows in the original training CSV before deduplication.
 
 See PROBLEM.md and STUDENT_HANDBOOK.md for the later training, deployment,
 monitoring, and submission requirements.
+
+## Stage 2 — Cleaning, training, and MLflow
+
+Use Python 3.12. After activating your virtual environment, run:
+
+```sh
+python -m pip install -r requirements.txt
+python -m pytest -q
+mlflow ui --backend-store-uri sqlite:///mlflow.db
+```
+
+Open [http://127.0.0.1:5000](http://127.0.0.1:5000) for MLflow. The ZIP includes
+the trained v1 model in `models/model.joblib`, the genuine run records in
+`mlflow.db`, and the local MLflow artifact directory. Start the combined dashboard with `python dashboard.py` and open
+[http://127.0.0.1:8000](http://127.0.0.1:8000). The Model Training link shows
+validation MAE and the registered champion directly from `mlflow.db`. The
+dashboard runs with Python alone. The standalone MLflow UI is optional.
+
+The training code removes duplicates, corrects the Old City rainfall scale,
+treats sentinel values as missing, fixes the target upper tail, and normalizes
+car-type spelling. It compares three gradient boosting configurations using a
+chronological validation split. The numeric imputer fits only on each run's
+training split. The chosen configuration is refit on all cleaned training rows
+and registered as `champion`. The later and holdout datasets are reserved for
+Stage 4.
+
+To reproduce v1, run `python -m src.cab_eta.train` in a separate extracted copy
+with no existing `mlflow.db` or `mlruns/` directory. Running it against the
+included database adds more runs and registers a new model version, so use the
+included v1 database for Stage 4. The raw CSVs are preserved and the tests use
+in-memory fixtures. The FastAPI TestClient test belongs with the Stage 3 API.
+
+Start MLflow from the project root so the bundled relative artifact paths
+resolve. If you load the registered model through MLflow's pyfunc interface,
+cast the six numeric feature columns to float before calling `predict`.

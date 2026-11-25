@@ -4,3 +4,13 @@ paths:
   holdout: data/raw/holdout_features.csv
   findings: reports/findings.yaml
 target: pickup_eta_min
+training:
+  validation_fraction: 0.2
+  random_seed: 54
+  experiment_name: MP054 Stage 2
+  registered_model_name: mp054-cab-eta
+  model_path: models/model.joblib
+  candidates:
+    - {n_estimators: 100, max_depth: 2, learning_rate: 0.08}
+    - {n_estimators: 150, max_depth: 3, learning_rate: 0.05}
+    - {n_estimators: 200, max_depth: 4, learning_rate: 0.05}

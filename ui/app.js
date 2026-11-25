@@ -87,7 +87,7 @@ function renderDataset() {
     cell.scope = "col";
     return cell;
   }));
-  select("thead").replaceChildren(heading);
+  select("#dashboard thead").replaceChildren(heading);
   renderRows();
 }
 
@@ -98,7 +98,7 @@ function renderRows() {
   const start = page * pageSize;
   const end = Math.min(start + pageSize, filtered.length);
 
-  select("tbody").replaceChildren(...filtered.slice(start, end).map((row) => {
+  select("#dashboard tbody").replaceChildren(...filtered.slice(start, end).map((row) => {
     const record = document.createElement("tr");
     record.append(...columns.map((column) => element("td", row[column] || "—")));
     return record;
@@ -152,3 +152,30 @@ select("#next").addEventListener("click", () => {
 });
 
 load();
+
+async function loadTraining() {
+  const status = select("#training-status");
+  try {
+    const response = await fetch("/api/training");
+    if (!response.ok) throw new Error("Training results unavailable");
+    const runs = await response.json();
+    if (!runs.length) {
+      status.textContent = "No completed training runs found.";
+      return;
+    }
+    select("#training-runs").replaceChildren(...runs.map((run) => {
+      const row = document.createElement("tr");
+      const model = run.champion_model
+        ? `${run.champion_model} v${run.champion_version} (champion)`
+        : "—";
+      row.append(element("td", run.name), element("td", run.mae.toFixed(3)), element("td", model));
+      return row;
+    }));
+    status.textContent = "Lower MAE means the predicted pick-up time was closer to the actual time.";
+    select("#training-table").hidden = false;
+  } catch {
+    status.textContent = "Training results unavailable. Check that mlflow.db is in the project folder.";
+  }
+}
+
+loadTraining();
