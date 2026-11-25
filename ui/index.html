@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cab ETA · Phase 1</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="masthead">
+    <div class="shell masthead-inner">
+      <div><strong>Cab ETA</strong><span class="place">Indore</span></div>
+      <span class="project">G045 / MP054</span>
+    </div>
+  </header>
+  <main class="shell">
+    <p class="eyebrow">Phase 1 · Data audit</p>
+    <h1>Pick-up time datasets</h1>
+    <p id="loading" role="status">Loading project data…</p>
+    <div id="dashboard" hidden>
+      <nav aria-label="Dataset" class="datasets">
+        <button type="button" data-dataset="train" aria-pressed="true">Training</button>
+        <button type="button" data-dataset="later" aria-pressed="false">Later data</button>
+        <button type="button" data-dataset="holdout_features" aria-pressed="false">Holdout</button>
+      </nav>
+      <p class="source" id="source"></p>
+      <section class="overview" aria-label="Dataset overview">
+        <dl id="metrics" class="metrics"></dl>
+        <div class="distribution">
+          <h2>Records by zone</h2>
+          <ul id="zones"></ul>
+        </div>
+      </section>
+      <section class="evidence" aria-labelledby="evidence-title">
+        <h2 id="evidence-title">Training audit evidence</h2>
+        <dl id="evidence"></dl>
+      </section>
+      <section class="records" aria-labelledby="records-title">
+        <div class="records-heading">
+          <h2 id="records-title">Raw records</h2>
+          <label>Filter by zone <select id="zone-filter"></select></label>
+        </div>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Raw records table">
+          <table><thead></thead><tbody></tbody></table>
+        </div>
+        <div class="pager">
+          <span id="page-status" aria-live="polite"></span>
+          <div>
+            <button type="button" id="previous">Previous</button>
+            <button type="button" id="next">Next</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

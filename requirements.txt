@@ -1,0 +1,6 @@
+dvc==3.59.2
+pandas==2.2.3
+PyYAML==6.0.2
+
+# DVC 3.59.2 uses pathspec's pre-1.0 gitwildmatch API.
+pathspec==0.12.1
