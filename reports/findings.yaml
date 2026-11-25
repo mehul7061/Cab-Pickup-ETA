@@ -33,21 +33,21 @@ tracking:
   experiment_name: MP054 Stage 2
   best_run_id: 5864f3fea8ad417dad6a1b9747274133
   registered_model_name: mp054-cab-eta
-  champion_version: 1
+  champion_version: 2
 monitoring:
   psi:
-    drivers_nearby: null
-    distance_to_driver_km: null
-    hour: null
-    rain_mm: null
-    surge: null
-    road_closures: null
-  most_drifted_feature: null
+    drivers_nearby: 0.0873124496098858
+    distance_to_driver_km: 5.548941934281146
+    hour: 0.0399095173134458
+    rain_mm: 0.0536798214402138
+    surge: 0.030131445598566252
+    road_closures: 0.02289451966863333
+  most_drifted_feature: distance_to_driver_km
   mae_by_group:
-    Airport: null
-    Old City: null
-    Tech Park: null
-  worst_served_group: null
-  mae_v1_on_check: null
-  mae_v2_on_check: null
-  decision: null
+    Airport: 2.921872834845816
+    Old City: 11.71800996534162
+    Tech Park: 3.464332504706623
+  worst_served_group: Old City
+  mae_v1_on_check: 5.305082564744806
+  mae_v2_on_check: 2.0905752334081344
+  decision: promote

@@ -11,7 +11,7 @@
   <header class="masthead">
     <div class="shell masthead-inner">
       <div><strong>Cab ETA</strong><span class="place">Indore · G045 / MP054</span></div>
-      <nav><a class="project" href="#model-training">Model Training</a> · <a class="project" href="#predict-eta">Predict ETA</a></nav>
+      <nav><a class="project" href="#model-training">Model Training</a> · <a class="project" href="#predict-eta">Predict ETA</a> · <a class="project" href="#monitoring">Monitoring</a></nav>
     </div>
   </header>
   <main class="shell">
@@ -81,6 +81,19 @@
           </tr></thead>
           <tbody id="training-runs"></tbody>
         </table>
+      </div>
+    </section>
+    <section id="monitoring" class="evidence" aria-labelledby="monitoring-title">
+      <p class="eyebrow">Stage 4</p>
+      <h2 id="monitoring-title">Monitoring and retraining</h2>
+      <p id="monitoring-status" role="status">Loading monitoring results…</p>
+      <div id="monitoring-results" hidden>
+        <dl id="monitoring-summary"></dl>
+        <details>
+          <summary>Feature drift and error by zone</summary>
+          <dl id="drift-results"></dl>
+          <dl id="zone-errors"></dl>
+        </details>
       </div>
     </section>
   </main>

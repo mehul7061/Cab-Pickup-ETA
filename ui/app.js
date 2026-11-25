@@ -207,3 +207,33 @@ select("#prediction-form").addEventListener("submit", async (event) => {
     output.textContent = "Could not reach the prediction API.";
   }
 });
+
+async function loadMonitoring() {
+  const status = select("#monitoring-status");
+  try {
+    const response = await fetch("/api/monitoring");
+    if (!response.ok) throw new Error("Monitoring results unavailable");
+    const result = await response.json();
+    const minutes = (number) => `${number.toFixed(3)} min`;
+    definitions(select("#monitoring-summary"), [
+      ["Most drifted feature", result.most_drifted_feature],
+      ["Highest v1 error by zone", result.worst_served_group],
+      ["v1 MAE on comparison data", minutes(result.mae_v1_on_check)],
+      ["v2 MAE on comparison data", minutes(result.mae_v2_on_check)],
+      ["Decision", result.decision === "promote" ? "Promote v2" : "Keep v1"],
+      ["Champion", `v${result.champion_version}`],
+    ]);
+    definitions(select("#drift-results"), Object.entries(result.psi).map(
+      ([feature, score]) => [feature, `PSI ${score.toFixed(3)}`],
+    ));
+    definitions(select("#zone-errors"), Object.entries(result.mae_by_group).map(
+      ([zone, score]) => [zone, minutes(score)],
+    ));
+    status.hidden = true;
+    select("#monitoring-results").hidden = false;
+  } catch {
+    status.textContent = "Open the dashboard through Uvicorn to view monitoring results.";
+  }
+}
+
+loadMonitoring();

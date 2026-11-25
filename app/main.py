@@ -8,6 +8,7 @@ from typing import Literal
 
 import joblib
 import pandas as pd
+import yaml
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field
@@ -69,6 +70,15 @@ def datasets():
 @app.get("/api/training")
 def training():
     return read_training_results()
+
+
+@app.get("/api/monitoring")
+def monitoring():
+    report = yaml.safe_load((ROOT / "reports" / "findings.yaml").read_text(encoding="utf-8"))
+    return {
+        **report["monitoring"],
+        "champion_version": report["tracking"]["champion_version"],
+    }
 
 
 app.mount("/", StaticFiles(directory=ROOT / "ui", html=True), name="dashboard")

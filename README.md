@@ -134,3 +134,30 @@ Check http://127.0.0.1:8000/health. The API uses the bundled model and
 can run without the raw CSVs. For the data audit in a fresh Git clone,
 restore the raw CSVs as described in Stage 1. The Kubernetes manifests
 are in `k8s/`. GitHub Actions runs the tests on each push.
+
+## Stage 4 — Monitoring and holdout predictions
+
+The final project includes the monitoring results in `reports/findings.yaml`
+and all holdout predictions in `predictions/holdout_predictions.csv`. Start
+the app with the Stage 3 Uvicorn command and click **Monitoring** to see the
+drift, zone errors, and champion decision.
+
+To reproduce Stage 4 from the project root, keep the bundled `mlflow.db` and
+`mlruns/` together and run:
+
+```sh
+python -m src.cab_eta.monitor
+```
+
+PSI uses ten equal-width bins based on the cleaned training range, with open
+outer edges and smoothing for empty bins. Missing values are excluded from
+the PSI calculation. The model handles missing inputs through its fitted
+imputer. The v1 zone MAEs use all 300 later rows. The comparison uses the
+last 90 later rows after sorting by date. The first 210 later rows are used
+only for fitting v2. The exported model and holdout predictions follow the
+MLflow champion alias.
+
+For GitHub, stage the source, tests, deployment files, completed findings,
+holdout predictions, `mlflow.db`, and `models/model.joblib`. Keep the supplied
+`mlruns/` directory locally if you plan to rerun the registry-backed workflow.
+The teacher's ZIP supplies the original raw data in a fresh clone.
